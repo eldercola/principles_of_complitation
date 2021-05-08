@@ -7,7 +7,8 @@ import java.util.regex.*;
 public class WordAnalysis {
     public String pattern = "^([$|a-z|A-Z][$|a-z|A-Z|0-9|_]*)||(_[$|a-z|A-Z|0-9|_]*[$|a-z|A-Z|0-9]+)";
     //key_word is used to store the key words.
-    private String key_word[] = {"return","void","main","break","continue","include","begin","end","if","else","switch","while"};
+    private String key_word[] = {"String","int","double","char",
+            "return","void","main","break","continue","include","begin","end","if","else","switch","while"};
     private char special_characters[] = {'\n', '\t', ' ', '\r'};
     //Initialize the key_word and add the key words into key_word.
     public WordAnalysis(){
@@ -36,6 +37,16 @@ public class WordAnalysis {
         if((letter>='a'&&letter<='z')||(letter>='A'&&letter<='Z')||(letter == '$')||(letter == '_'))return true;
         return false;
     }
+    private String getFiveChars(String word){
+        if(word.length()>5){
+            String newlyWord = "";
+            for(int i = 0;i<5;i++){
+                newlyWord+=word.charAt(i);
+            }
+            return newlyWord;
+        }
+        else return word;
+    }
     void analysis(char[] chars){
         String current_word = "";
         for(int i = 0;i<chars.length-1;i++){
@@ -53,7 +64,7 @@ public class WordAnalysis {
                     System.out.println(current_word+"\t4"+"\tkeyword 关键字");
                 }
                 //if the current_word is an identifier
-                else if(isIdentifier(current_word)) System.out.println(current_word+"\t4"+"\tidentifier 标识符");
+                else if(isIdentifier(current_word)) System.out.println(getFiveChars(current_word)+"\t4"+"\tidentifier 标识符");
                 //not a legal identifier
                 else System.out.println(current_word+"\t6\tNo Identifier 非标识符");
             }
@@ -71,6 +82,7 @@ public class WordAnalysis {
                     case '+':
                     case '-':
                     case '*':
+                    case '#':
                     case '/':
                         System.out.println(current_char+"\t2"+"\toperator 操作符");
                         break;
@@ -80,6 +92,8 @@ public class WordAnalysis {
                     case ']':
                     case '{':
                     case '}':
+                    case ';':
+                    case '.':
                         System.out.println(current_char+"\t3"+"\tdelimiter 分隔符");
                         break;
                     case '=':{
@@ -114,7 +128,7 @@ public class WordAnalysis {
                             i--;
                         }
                     }break;
-                    default:System.out.println(current_char+"\t6\tNo Identifier 非标识符");
+                    default:System.out.println(current_char+"\t6\tNo Identifier 非法字符");
             }
         }
     }

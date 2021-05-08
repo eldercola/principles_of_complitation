@@ -1,8 +1,1 @@
-void main(){
-    if(a==8){
-        $c = $c + 2;
-        $b = 1.2;
-        _c = _c + 3;
-        _AB $AB _ $
-    }
-}
+67*uu78 nnnnnnnnn nnnnn
