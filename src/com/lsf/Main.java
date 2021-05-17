@@ -1,7 +1,10 @@
 package com.lsf;
 
+import javafx.util.Pair;
+
 import java.io.File;
 import java.io.FileReader;
+import java.util.Vector;
 
 public class Main {
 
@@ -15,5 +18,7 @@ public class Main {
         reader.read(buf);
         reader.close();
         boot.analysis(buf);
+        Vector<Pair<String,String>> words = boot.getWordsClassify();
+        System.out.println(words);
     }
 }

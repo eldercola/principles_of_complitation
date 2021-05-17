@@ -1,8 +1,9 @@
 package com.lsf;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.regex.*;
+import javafx.util.Pair;
+
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class WordAnalysis {
     public String pattern = "^([$|a-z|A-Z][$|a-z|A-Z|0-9|_]*)||(_[$|a-z|A-Z|0-9|_]*[$|a-z|A-Z|0-9]+)";
@@ -10,6 +11,12 @@ public class WordAnalysis {
     private String key_word[] = {"String","int","double","char",
             "return","void","main","break","continue","include","begin","end","if","else","switch","while"};
     private char special_characters[] = {'\n', '\t', ' ', '\r'};
+    Vector<Pair<String,String>> wordsClassify = new Vector<Pair<String,String>>();
+
+    public Vector<Pair<String, String>> getWordsClassify() {
+        return wordsClassify;
+    }
+
     //Initialize the key_word and add the key words into key_word.
     public WordAnalysis(){
     }
@@ -62,11 +69,21 @@ public class WordAnalysis {
                 //if the current_word is a key word
                 if(isKeyWord(current_word)){
                     System.out.println(current_word+"\t4"+"\tkeyword 关键字");
+                    Pair<String,String> p = new Pair<>(current_word,"keyword");
+                    wordsClassify.add(p);
                 }
                 //if the current_word is an identifier
-                else if(isIdentifier(current_word)) System.out.println(getFiveChars(current_word)+"\t4"+"\tidentifier 标识符");
+                else if(isIdentifier(current_word)){
+                    Pair<String,String> p = new Pair<>(current_word,"identifier");
+                    wordsClassify.add(p);
+                    System.out.println(getFiveChars(current_word)+"\t4"+"\tidentifier 标识符");
+                }
                 //not a legal identifier
-                else System.out.println(current_word+"\t6\tNo Identifier 非标识符");
+                else{
+                    System.out.println(current_word+"\t6\tNo Identifier 非标识符");
+                    Pair<String,String> p = new Pair<>(current_word,"No Identifier");
+                    wordsClassify.add(p);
+                }
             }
             else if(isDigit(current_char)||current_char == '.'){
                 while(isDigit(current_char)||(current_char == '.'&&isDigit(chars[++i]))){
@@ -76,6 +93,8 @@ public class WordAnalysis {
                 }
                 i--;
                 //the current_word is digit
+                Pair<String,String> p = new Pair<>(current_word,"number");
+                wordsClassify.add(p);
                 System.out.println(current_word+"\t5"+"\tnumber 常数");
             }
             else switch(current_char){
@@ -84,6 +103,8 @@ public class WordAnalysis {
                     case '*':
                     case '#':
                     case '/':
+                        Pair<String,String> p = new Pair<>(String.valueOf(current_char),"operator");
+                        wordsClassify.add(p);
                         System.out.println(current_char+"\t2"+"\toperator 操作符");
                         break;
                     case '(':
@@ -94,41 +115,71 @@ public class WordAnalysis {
                     case '}':
                     case ';':
                     case '.':
+                        p = new Pair<>(String.valueOf(current_char),"delimiter");
+                        wordsClassify.add(p);
                         System.out.println(current_char+"\t3"+"\tdelimiter 分隔符");
                         break;
                     case '=':{
                         current_char = chars[++i];
-                        if(current_char == '=')System.out.println("==\t2\toperator 操作符");
+                        if(current_char == '='){
+                            p = new Pair<>("==","operator");
+                            wordsClassify.add(p);
+                            System.out.println("==\t2\toperator 操作符");
+                        }
                         else{
+                            p = new Pair<>("=","operator");
+                            wordsClassify.add(p);
                             System.out.println("=\t2\toperator 操作符");
                             i--;
                         }
                     }break;
                     case ':':{
                         current_char = chars[++i];
-                        if(current_char == '=')System.out.println(":=\t2\toperator 操作符");
+                        if(current_char == '='){
+                            p = new Pair<>(":=","operator");
+                            wordsClassify.add(p);
+                            System.out.println(":=\t2\toperator 操作符");
+                        }
                         else{
+                            p = new Pair<>(":","operator");
+                            wordsClassify.add(p);
                             System.out.println(":\t2\toperator 操作符");
                             i--;
                         }
                     }break;
                     case '>':{
                         current_char = chars[++i];
-                        if(current_char == '=')System.out.println(">=\t2\toperator 操作符");
+                        if(current_char == '='){
+                            p = new Pair<>(">=","operator");
+                            wordsClassify.add(p);
+                            System.out.println(">=\t2\toperator 操作符");
+                        }
                         else{
+                            p = new Pair<>(">","operator");
+                            wordsClassify.add(p);
                             System.out.println(">\t2\toperator 操作符");
                             i--;
                         }
                     }break;
                     case '<':{
                         current_char = chars[++i];
-                        if(current_char == '=')System.out.println("<=\t2\toperator 操作符");
+                        if(current_char == '='){
+                            p = new Pair<>("<=","operator");
+                            wordsClassify.add(p);
+                            System.out.println("<=\t2\toperator 操作符");
+                        }
                         else{
+                            p = new Pair<>("<","operator");
+                            wordsClassify.add(p);
                             System.out.println("<\t2\toperator 操作符");
                             i--;
                         }
                     }break;
-                    default:System.out.println(current_char+"\t6\tNo Identifier 非法字符");
+                    default:{
+                        p = new Pair<>(String.valueOf(current_char),"No Identifier");
+                        wordsClassify.add(p);
+                        System.out.println(current_char+"\t6\tNo Identifier 非法字符");
+                    }
             }
         }
     }
