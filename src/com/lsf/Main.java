@@ -20,5 +20,7 @@ public class Main {
         boot.analysis(buf);
         Vector<Pair<String,String>> words = boot.getWordsClassify();
         System.out.println(words);
+        GrammaAnalysis grammaBoot = new GrammaAnalysis(words);
+        grammaBoot.Start();
     }
 }
