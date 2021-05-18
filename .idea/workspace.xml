@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e743c13d-cd5c-4b49-9e17-5c182820797f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/lsf/util/Expression.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/lsf/util/GrammaException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/add.txt" beforeDir="false" afterPath="$PROJECT_DIR$/add.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/lsf/GrammaAnalysis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/lsf/GrammaAnalysis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/lsf/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/lsf/Main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -81,6 +78,7 @@
       <workItem from="1621254882849" duration="300000" />
       <workItem from="1621263322480" duration="2109000" />
       <workItem from="1621302413721" duration="10337000" />
+      <workItem from="1621332617125" duration="1438000" />
     </task>
     <servers />
   </component>

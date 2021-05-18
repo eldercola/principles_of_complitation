@@ -11,12 +11,15 @@ public class GrammaAnalysis {
         this.v = v;
     }
     public void Start(){
-        ParseE();
+        ParseS();
     }
     public void MatchToken(String expected){
         if(QuickCheckType(expected)||QuickCheckKey(expected)){
             lookahead++;
-            if(lookahead>=v.size())System.exit(0);
+            if(lookahead>=v.size()){
+                System.out.println("Accepted!");
+                System.exit(0);
+            }
         }
         else{
             QuickError("Match");
@@ -33,6 +36,17 @@ public class GrammaAnalysis {
     public void QuickError(String inWhich){
         System.out.println(inWhich+" "+lookahead+" Syntax error!");
         System.exit(1);
+    }
+    // S = E;
+    // SELECT(S->E;) = FIRST(E)
+    public void ParseS(){
+        if(QuickCheckType("number")||QuickCheckType("identifier")||QuickCheckKey("(")){
+            ParseE();
+            MatchToken(";");
+        }
+        else{
+            QuickError("S");
+        }
     }
     // A=<digit>|identifier
     // SELECT(A-><digit>) = {<digit>}
@@ -70,7 +84,6 @@ public class GrammaAnalysis {
         if(QuickCheckType("number")||QuickCheckType("identifier")||QuickCheckKey("(")){
             ParseF();
             ParseE_();
-            //MatchToken("#");
         }
         else{
             QuickError("E");
@@ -90,7 +103,7 @@ public class GrammaAnalysis {
     // F' = *TF' | /TF' | NULL
     // SELECT(F'->*TF') = {"*"}
     // SELECT(F'->/TF') = {"/"}
-    // SELECT(F'->NULL) = FOLLOW(F') = {"+","-","#"}
+    // SELECT(F'->NULL) = FOLLOW(F') = {"+","-",";"}
     public void ParseF_(){
         if(QuickCheckKey("*")){
             MatchToken("*");
@@ -102,7 +115,7 @@ public class GrammaAnalysis {
             ParseT();
             ParseF_();
         }
-        else if(QuickCheckKey("+")||QuickCheckKey("-")){
+        else if(QuickCheckKey(")")||QuickCheckKey("+")||QuickCheckKey("-")||QuickCheckKey(";")){
 
         }
         else{
@@ -114,7 +127,7 @@ public class GrammaAnalysis {
     // FOLLOW(E')={";"}
     // SELECT(E'->+FE') = {"+"}
     // SELECT(E'->-FE') = {"-"}
-    // SELECT(E'->NULL) = {"#"}
+    // SELECT(E'->NULL) = {";",")"}
     public void ParseE_(){
         if(QuickCheckKey("+")){
             MatchToken("+");
@@ -126,7 +139,7 @@ public class GrammaAnalysis {
             ParseF();
             ParseE_();
         }
-        else if(QuickCheckKey(";")){
+        else if(QuickCheckKey(";")||QuickCheckKey(")")){
 
         }
         else{
