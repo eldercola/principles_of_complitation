@@ -19,7 +19,7 @@ public class Main {
         reader.close();
         boot.analysis(buf);
         Vector<Pair<String,String>> words = boot.getWordsClassify();
-        System.out.println(words);
+        System.out.println("");
         GrammaAnalysis grammaBoot = new GrammaAnalysis(words);
         grammaBoot.Start();
     }

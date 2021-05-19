@@ -6,23 +6,69 @@ import java.util.Vector;
 
 public class GrammaAnalysis {
     public Vector<Pair<String,String>> v;
+    public Vector<Vector<Pair<String,String>>> total;
     public int lookahead = 0;
+    public int line = 1;
     public GrammaAnalysis(Vector<Pair<String,String>> v){
         this.v = v;
     }
     public void Start(){
-        ParseS();
+        this.total = getLine();
+        for(int i = 0;i<total.size();i++){
+            lookahead = 0;
+            line = i+1;
+            this.v = total.elementAt(i);
+            ParseS();
+        }
+        System.out.println("Accepted");
+    }
+    public Vector<Vector<Pair<String,String>>> getLine(){
+        Vector<Vector<Pair<String,String>>> vs = new Vector<>();
+        Vector<Pair<String,String>> temp = new Vector<>();
+        for(int i = 0;i<v.size();i++){
+            temp.addElement(v.elementAt(i));
+            if(i==v.size()-1||v.elementAt(i).getKey().equals(";")){
+                vs.addElement(temp);
+                temp = new Vector<>();
+            }
+        }
+        return vs;
     }
     public void MatchToken(String expected){
         if(QuickCheckType(expected)||QuickCheckKey(expected)){
             lookahead++;
+            /*
             if(lookahead>=v.size()){
                 System.out.println("Accepted!");
                 System.exit(0);
             }
+             */
         }
         else{
             QuickError("Match");
+        }
+    }
+    public String QuickMap(String inWhich){
+        if(inWhich.equals("Match")){
+            return "匹配单个字符错误";
+        }
+        else if(inWhich.equals("S")){
+            return "开头不为常数、标识符或(";
+        }
+        else if(inWhich.equals("A")){
+            return "此处应为常数或标识符";
+        }
+        else if(inWhich.equals("T")||inWhich.equals("E")||inWhich.equals("F")){
+            return "此处应为常数、标识符或(";
+        }
+        else if(inWhich.equals("F_")){
+            return "此处应为*,/或),+,-,;";
+        }
+        else if(inWhich.equals("E_")){
+            return "此处应为+,-,)或;";
+        }
+        else{
+            return "未知错误";
         }
     }
     public boolean QuickCheckType(String expected){
@@ -34,7 +80,10 @@ public class GrammaAnalysis {
         return false;
     }
     public void QuickError(String inWhich){
-        System.out.println(inWhich+" "+lookahead+" Syntax error!");
+        System.out.println("line: "+line+" position: "+(lookahead+1)+" 你的输入:"+total.elementAt(line-1).elementAt(lookahead).getKey()+" "+QuickMap(inWhich));
+        for(int i = 0;i<total.elementAt(line-1).size();i++){
+            System.out.print(total.elementAt(line-1).elementAt(i).getKey());
+        }
         System.exit(1);
     }
     // S = E;
